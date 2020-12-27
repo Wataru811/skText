@@ -8,7 +8,7 @@ Sketch file text extractor.
 2. you can get text data from pages/<page-data>.json by alphavet ordering.
   
 ```
-Python skText.py <work-dir>/pages/<PAGE-DATA>.json  > output.txt
+$ Python skText.py <work-dir>/pages/<PAGE-DATA>.json  > output.txt
 ```
   
   
