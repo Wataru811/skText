@@ -1,6 +1,11 @@
 # skText
 Sketch file text extractor.
 
+```
+skText [-all] <sketch-page-json.json>
+```
+
+
 
 ## how to use
 
@@ -10,8 +15,18 @@ Sketch file text extractor.
 ```
 $ Python skText.py <work-dir>/pages/<PAGE-DATA>.json  > output.txt
 ```
-  
-  
+
+
+## version
+
+*v1.0*
+
+extranct top level strings
+
+*v1.1*
+
+-all option : extract nexted strings
+
 
 
 
