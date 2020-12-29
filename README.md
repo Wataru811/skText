@@ -25,7 +25,7 @@ extranct top level strings
 
 *v1.1*
 
--all option : extract nexted strings
+-all option : extract nested strings
 
 
 
