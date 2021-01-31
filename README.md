@@ -2,18 +2,19 @@
 Sketch file text extractor.
 
 ```
-skText [-all] <sketch-page-json.json>
+$ python skText [-all] <sketch-page-json.json>
 ```
 
 
 
-## how to use
+### usage 
 
 1. unzip sketch file at <work-dir>
 2. you can get text data from pages/<page-data>.json by alphavet ordering.
-  
+ 
+ 
 ```
-$ Python skText.py <work-dir>/pages/<PAGE-DATA>.json  > output.txt
+$ python3 skText.py <work-dir>/pages/<PAGE-DATA>.json  > output.txt
 ```
 
 
@@ -26,6 +27,10 @@ extranct top level strings
 *v1.1*
 
 -all option : extract nested strings
+
+*v1.11*
+
+-clean the code
 
 
 
