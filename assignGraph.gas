@@ -1,0 +1,113 @@
+ function myAlert( str ){
+   var ui = SpreadsheetApp.getUi();
+   var response = ui.alert(str);
+ }
+
+var ScriptProperties = PropertiesService.getScriptProperties();
+function getProp(id) {
+  var pp = ScriptProperties.getProperties();
+  return pp[id]
+}
+function setProp(key, value){
+  ScriptProperties.setProperties( {key:value} ); 
+}
+
+// 2021/08までの表に対応。表が増えたら修正してください。
+function copyPage() {
+  setProp( "run", false );
+  if( true  ==getProp("run") ) {
+     myAlert( "別のスクリプトが実行中です。[end]");
+ //    return;
+  }
+  setProp( "run", true );
+  
+  var rt = "A1:AJ80"
+  // get source data
+  var source = SpreadsheetApp.openById('1lxm69y5Ofc3YFj4-iu7-7xLBX09O56q_bhpaoIOMDsA');
+  var sheet = source.getSheetByName("AssignGraph");
+  if (sheet != null) {
+      Logger.log(sheet.getIndex());
+  } 
+  var orgData = sheet.getRange(rt).getValues();
+  
+  // destination
+  var destination = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("AssignGraph");
+  if (destination != null) {
+      Logger.log(destination.getIndex());
+  }
+  // execute copy
+  destination.getRange(rt).setValues( orgData );
+  
+  // merge cells
+  for (let i = 5; i <= 34; i+=4) {
+    for (let j = 6; j <= 14 ; j++) {
+      let cells;
+      if( j== 6 ){
+        cells = destination.getRange(j, i, 1, 4);
+        
+      }else {
+        cells = destination.getRange(j, i+1, 1, 3);
+        cells.merge();
+      }
+      cells.merge();
+    }
+  }
+  setProp( "run", false );
+  console.log( getProp("run"));
+  //RoleSum();
+}
+
+function strNow() {
+  var date = new Date();
+  return Utilities.formatDate( date, 'Asia/Tokyo', 'yyyy-MM-dd: hh:mm');
+}
+
+function RoleSum()  {
+  if( true == getProp("run") ) {
+     console.log( "???")
+     myAlert( "別のスクリプトが実行中です。[end]");
+     return;
+  }
+  setProp( "run", true );
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("金額付き");
+  // copy Data from AssignGraph to 金額付き
+  let rt = "E19:AJ51";
+  var source = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("AssignGraph");
+  var orgData = source.getRange(rt).getValues();
+  sheet.getRange(rt).setValues( orgData );
+
+
+//  var clearRange = "E87:AK99";
+// sheet.getRange(clearRange).clear();
+  sheet.getRange("A4").setValue( "集計中！！！");
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("金額付き");
+  
+  // read projects
+  var result = sheet.getRange( "E87:AJ93").getValues();
+  
+  var projs = sheet.getRange("C87:C98").getValues();
+  var data = sheet.getRange("E19:AI65").getValues();
+  var prices = sheet.getRange("D19:D65").getValues();
+  var pMax = projs.length;
+  var jMax = result.length;
+  var iMax = result[0].length;
+  var dLen = data[0].length;
+  // execute
+  for (let i = 0; i < iMax; i++ ) {
+    for (let j = 0; j < jMax ; j++) {
+      var amount=0;
+      var kind = projs[j];
+      for( let cc=0; cc<dLen; cc++ ){
+        if( kind[0] == data[cc][i] )  
+          amount+=prices[cc]/4;　　　　// 1 cell = 1 week ( 1month/4 )
+      }
+      result[j][i]=amount;
+    }
+  }
+  sheet.getRange( "E87:AJ93").setValues(result);
+  sheet.getRange("A4").setValue( "集計日時：" + strNow() + " (JST)" );
+  setProp( "run", false );
+
+}
+
